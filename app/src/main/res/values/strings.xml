@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Bugbusters | Mobile</string>
+
+    <string name="btn_reject">Reject</string>
+    <string name="btn_accept">Accept</string>
+    <string name="btn_finish_order">Finish order</string>
+
+    <string name="tmp_placeholder">place_holder</string>
+
+    <string name="tv_address">Address</string>
+    <string name="tv_delivery_time">Delivery time</string>
+
+    <string name="dlg_order_status">Status</string>
+    <string name="dlg_order_accepted">Order accepted!</string>
+
+    <string name="tv_active_order">You have an active order</string>
+</resources>
