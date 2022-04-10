@@ -1,6 +1,7 @@
 package me.naloaty.vezdekodmobile.fragments;
 
 import android.os.Bundle;
+import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,15 +9,10 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.NavDirections;
-import androidx.navigation.Navigation;
 
 import me.naloaty.vezdekodmobile.R;
 
 public class ActiveOrderFragment extends Fragment {
-
-    private NavController navController;
 
     @Nullable
     @Override
@@ -26,11 +22,18 @@ public class ActiveOrderFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        navController = Navigation.findNavController(view);
 
         view.findViewById(R.id.btn_finish_order).setOnClickListener(v -> {
-            NavDirections dest = ActiveOrderFragmentDirections.actionViewOrders();
-            navController.navigate(dest);
+            getParentFragmentManager().beginTransaction()
+                    .setReorderingAllowed(true)
+                    .setCustomAnimations(
+                            R.anim.slide_in_left,
+                            R.anim.slide_out_right,
+                            R.anim.slide_in_left,
+                            R.anim.slide_out_right
+                    )
+                    .replace(R.id.fragment_container_view, OrderCardsFragment.class, null)
+                    .commit();
         });
     }
 }

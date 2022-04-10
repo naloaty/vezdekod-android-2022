@@ -11,10 +11,6 @@ import android.view.animation.LinearInterpolator;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
-import androidx.navigation.NavDirections;
-import androidx.navigation.Navigation;
 
 import com.yuyakaido.android.cardstackview.CardStackLayoutManager;
 import com.yuyakaido.android.cardstackview.CardStackListener;
@@ -40,8 +36,6 @@ public class OrderCardsFragment extends Fragment implements CardStackListener, O
     private SwipeAnimationSetting acceptSetting;
     private AlertDialog.Builder dialogBuilder;
 
-    private NavController navController;
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +53,6 @@ public class OrderCardsFragment extends Fragment implements CardStackListener, O
         cardStackView = view.findViewById(R.id.csv_cards);
         layoutManager = new CardStackLayoutManager(getContext(), this);
         ordersAdapter = new OrdersAdapter(MockUtils.simpleOrders());
-        navController = Navigation.findNavController(view);
 
         initStackView();
     }
@@ -77,8 +70,16 @@ public class OrderCardsFragment extends Fragment implements CardStackListener, O
                     .setMessage(R.string.dlg_order_accepted)
                     .setOnDismissListener(di -> {
                         // Use layoutManager.getTopPosition() if needed
-                        NavDirections dest = OrderCardsFragmentDirections.actionActivateOrder();
-                        navController.navigate(dest);
+                        getParentFragmentManager().beginTransaction()
+                                .setReorderingAllowed(true)
+                                .setCustomAnimations(
+                                        R.anim.slide_in_right,
+                                        R.anim.slide_out_left,
+                                        R.anim.slide_in_right,
+                                        R.anim.slide_out_left
+                                )
+                                .replace(R.id.fragment_container_view, ActiveOrderFragment.class, null)
+                                .commit();
                     }).create().show();
         }
     }
